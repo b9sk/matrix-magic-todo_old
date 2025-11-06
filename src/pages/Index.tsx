@@ -167,7 +167,7 @@ const Index = () => {
   };
 
   const extractHashtags = (text: string): string[] => {
-    const hashtagRegex = /#[\w\-]+/g;
+    const hashtagRegex = /#[\p{L}\p{N}_\-]+/gu;
     const matches = text.match(hashtagRegex);
     return matches || [];
   };
