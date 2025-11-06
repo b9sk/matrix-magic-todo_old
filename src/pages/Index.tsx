@@ -344,7 +344,7 @@ const Index = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => setSelectedHashtag(null)}
-                    className="h-6 px-2 text-[11px] bg-secondary text-accent"
+                    className="h-6 px-2 text-[11px]"
                   >
                     {t.clearFilter}
                   </Button>
