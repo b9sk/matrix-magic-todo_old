@@ -278,6 +278,7 @@ const Index = () => {
                 onToggleComplete={handleToggleComplete}
                 onEditTask={handleEditTask}
                 onMoveTask={handleMoveTask}
+                onHashtagClick={(tag) => setSelectedHashtag(tag)}
               />
             ))}
           </div>
@@ -288,6 +289,7 @@ const Index = () => {
                 task={activeTask}
                 onDelete={() => {}}
                 onToggleComplete={() => {}}
+                onHashtagClick={(tag) => setSelectedHashtag(tag)}
               />
             ) : null}
           </DragOverlay>

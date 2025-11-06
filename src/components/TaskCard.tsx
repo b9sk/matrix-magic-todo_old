@@ -42,9 +42,10 @@ interface TaskCardProps {
   onToggleComplete: (id: string) => void;
   onEdit?: (id: string, text: string) => void;
   onMove?: (id: string, quadrant: QuadrantType) => void;
+  onHashtagClick?: (hashtag: string) => void;
 }
 
-export const TaskCard = ({ task, onDelete, onToggleComplete, onEdit, onMove }: TaskCardProps) => {
+export const TaskCard = ({ task, onDelete, onToggleComplete, onEdit, onMove, onHashtagClick }: TaskCardProps) => {
   const t = useTranslations();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editText, setEditText] = useState(task.text);
@@ -70,6 +71,45 @@ export const TaskCard = ({ task, onDelete, onToggleComplete, onEdit, onMove }: T
     }
   };
 
+  const renderTextWithHashtags = (text: string) => {
+    const hashtagRegex = /#[\p{L}\p{N}_\-]+/gu;
+    const parts: Array<{ type: 'text' | 'tag'; value: string }> = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = hashtagRegex.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push({ type: 'text', value: text.slice(lastIndex, match.index) });
+      }
+      parts.push({ type: 'tag', value: match[0] });
+      lastIndex = hashtagRegex.lastIndex;
+    }
+    if (lastIndex < text.length) {
+      parts.push({ type: 'text', value: text.slice(lastIndex) });
+    }
+
+    return parts.map((part, idx) => {
+      if (part.type === 'text') {
+        return (
+          <span key={`t-${idx}`}>{part.value}</span>
+        );
+      }
+      return (
+        <button
+          key={`h-${idx}`}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onHashtagClick) onHashtagClick(part.value);
+          }}
+          className="text-primary hover:underline focus:underline focus:outline-none"
+        >
+          {part.value}
+        </button>
+      );
+    });
+  };
+
   return (
     <Card
       ref={setNodeRef}
@@ -93,7 +133,7 @@ export const TaskCard = ({ task, onDelete, onToggleComplete, onEdit, onMove }: T
             "text-sm break-words",
             task.completed && "line-through text-muted-foreground"
           )}>
-            {task.text}
+            {renderTextWithHashtags(task.text)}
           </p>
         </div>
 
