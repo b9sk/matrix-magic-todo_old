@@ -8,6 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    color-scheme: light dark;
     --background: 220 15% 97%;
     --foreground: 222 47% 11%;
 
@@ -59,6 +60,7 @@ All colors MUST be HSL.
   }
 
   .dark {
+    color-scheme: dark;
     --background: 222 47% 11%;
     --foreground: 210 40% 98%;
 

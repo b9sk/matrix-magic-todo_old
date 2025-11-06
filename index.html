@@ -20,6 +20,34 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var darkQuery = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+        var themeMeta = document.querySelector('meta[name="theme-color"]');
+
+        function applyScheme(isDark) {
+          if (isDark) {
+            root.classList.add('dark');
+            if (themeMeta) themeMeta.setAttribute('content', '#0b1220');
+          } else {
+            root.classList.remove('dark');
+            if (themeMeta) themeMeta.setAttribute('content', '#ffffff');
+          }
+        }
+
+        try {
+          applyScheme(darkQuery && darkQuery.matches);
+          if (darkQuery && typeof darkQuery.addEventListener === 'function') {
+            darkQuery.addEventListener('change', function (e) { applyScheme(e.matches); });
+          } else if (darkQuery && typeof darkQuery.addListener === 'function') {
+            darkQuery.addListener(function (e) { applyScheme(e.matches); });
+          }
+        } catch (_) {
+          // no-op: fail safe to light mode
+        }
+      })();
+    </script>
   </head>
 
   <body>
