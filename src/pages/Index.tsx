@@ -327,16 +327,6 @@ const Index = () => {
             <>
               <div className="h-6 w-px bg-border hidden sm:block" />
               <div className="flex flex-wrap items-center gap-2">
-                {selectedHashtag && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedHashtag(null)}
-                    className="h-7 px-2 text-xs"
-                  >
-                    {t.clearFilter}
-                  </Button>
-                )}
                 {getAllHashtags().map(hashtag => (
                   <Button
                     key={hashtag}
@@ -348,6 +338,16 @@ const Index = () => {
                     {hashtag}
                   </Button>
                 ))}
+                {selectedHashtag && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedHashtag(null)}
+                    className="h-7 px-2 text-xs bg-secondary text-accent"
+                  >
+                    {t.clearFilter}
+                  </Button>
+                )}
               </div>
             </>
           )}
