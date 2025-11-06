@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, closestCorners } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { QuadrantCard } from '@/components/QuadrantCard';
@@ -17,6 +17,96 @@ const Index = () => {
   const [selectedHashtag, setSelectedHashtag] = useState<string | null>(null);
   const { toast } = useToast();
   const t = useTranslations();
+
+  // Seed demo data for first-time users
+  useEffect(() => {
+    try {
+      const seededFlagKey = 'demo-seeded-v1';
+      const alreadySeeded = window.localStorage.getItem(seededFlagKey);
+      if (alreadySeeded) return;
+      if (Array.isArray(tasks) && tasks.length > 0) return;
+
+      const format = (d: Date) => {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      };
+
+      const now = new Date();
+      const plusDays = (n: number) => new Date(now.getFullYear(), now.getMonth(), now.getDate() + n);
+      const plusMonths = (n: number) => new Date(now.getFullYear(), now.getMonth() + n, now.getDate());
+
+      const d1 = `#${format(plusDays(1))}`; // +1 day
+      const d30 = `#${format(plusMonths(1))}`; // +1 month
+      const d180 = `#${format(plusMonths(6))}`; // +6 months
+
+      const demo: Task[] = [
+        {
+          id: `demo-${Date.now()}-1`,
+          text: `Сделать годовой отчёт для руководства #работа ${d1}`,
+          quadrant: 'urgent-important',
+          completed: false,
+          createdAt: Date.now(),
+        },
+        {
+          id: `demo-${Date.now()}-2`,
+          text: `Запланировать медосмотр и прививки #здоровье ${d30}`,
+          quadrant: 'not-urgent-important',
+          completed: false,
+          createdAt: Date.now(),
+        },
+        {
+          id: `demo-${Date.now()}-3`,
+          text: `Заказать воду/канцелярию в #офис ${d1}`,
+          quadrant: 'urgent-not-important',
+          completed: false,
+          createdAt: Date.now(),
+        },
+        {
+          id: `demo-${Date.now()}-4`,
+          text: `Отписаться от лишних рассылок и приложений`,
+          quadrant: 'not-urgent-not-important',
+          completed: false,
+          createdAt: Date.now(),
+        },
+        {
+          id: `demo-${Date.now()}-5`,
+          text: `Подготовить презентацию стратегии на полгода ${d180}`,
+          quadrant: 'not-urgent-important',
+          completed: false,
+          createdAt: Date.now(),
+        },
+        {
+          id: `demo-${Date.now()}-6`,
+          text: `Согласовать перенос встречи с клиентом ${d1}`,
+          quadrant: 'urgent-not-important',
+          completed: false,
+          createdAt: Date.now(),
+        },
+        {
+          id: `demo-${Date.now()}-7`,
+          text: `Тренировка: бег 5 км ${d30}`,
+          quadrant: 'not-urgent-important',
+          completed: false,
+          createdAt: Date.now(),
+        },
+        {
+          id: `demo-${Date.now()}-8`,
+          text: `Просмотр ленты социальных сетей #прокрастинация`,
+          quadrant: 'not-urgent-not-important',
+          completed: false,
+          createdAt: Date.now(),
+        },
+      ];
+
+      setTasks(demo);
+      window.localStorage.setItem(seededFlagKey, 'true');
+    } catch (e) {
+      // no-op if localStorage unavailable
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const QUADRANTS: QuadrantInfo[] = [
     {
