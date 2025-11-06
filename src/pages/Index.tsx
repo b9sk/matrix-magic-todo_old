@@ -290,68 +290,71 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <header>
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <div className="flex items-center gap-3">
-              <LayoutGrid className="h-8 w-8 text-primary" />
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                {t.appTitle}
-              </h1>
+        <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b mb-6">
+          <div className="py-4">
+            <div className="flex items-center gap-3 mb-4">
+              <LayoutGrid className="h-7 w-7 text-primary" />
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                  {t.appTitle}
+                </h1>
+                <p className="text-sm text-muted-foreground hidden sm:block">
+                  {t.appSubtitle}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setHideCompleted(!hideCompleted)}
+                className="flex items-center gap-2"
+              >
+                {hideCompleted ? (
+                  <>
+                    <Eye className="h-4 w-4" />
+                    <span className="hidden sm:inline">{t.showCompleted}</span>
+                  </>
+                ) : (
+                  <>
+                    <EyeOff className="h-4 w-4" />
+                    <span className="hidden sm:inline">{t.hideCompleted}</span>
+                  </>
+                )}
+              </Button>
+              
+              {getAllHashtags().length > 0 && (
+                <>
+                  <div className="h-6 w-px bg-border hidden sm:block" />
+                  <div className="flex flex-wrap items-center gap-2">
+                    {getAllHashtags().map(hashtag => (
+                      <Button
+                        key={hashtag}
+                        variant={selectedHashtag === hashtag ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedHashtag(selectedHashtag === hashtag ? null : hashtag)}
+                        className="h-7 px-2 text-xs"
+                      >
+                        {hashtag}
+                      </Button>
+                    ))}
+                    {selectedHashtag && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedHashtag(null)}
+                        className="h-7 px-2 text-xs bg-secondary text-accent"
+                      >
+                        {t.clearFilter}
+                      </Button>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
-          <p className="text-muted-foreground">
-            {t.appSubtitle}
-          </p>
         </header>
-        <div className='py-4 flex flex-wrap items-center gap-2'>
-          <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setHideCompleted(!hideCompleted)}
-              className="flex items-center gap-2"
-          >
-            {hideCompleted ? (
-              <>
-                <Eye className="h-4 w-4" />
-                <span className="hidden sm:inline">{t.showCompleted}</span>
-              </>
-            ) : (
-              <>
-                <EyeOff className="h-4 w-4" />
-                <span className="hidden sm:inline">{t.hideCompleted}</span>
-              </>
-            )}
-          </Button>
-          
-          {getAllHashtags().length > 0 && (
-            <>
-              <div className="h-6 w-px bg-border hidden sm:block" />
-              <div className="flex flex-wrap items-center gap-2">
-                {getAllHashtags().map(hashtag => (
-                  <Button
-                    key={hashtag}
-                    variant={selectedHashtag === hashtag ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedHashtag(selectedHashtag === hashtag ? null : hashtag)}
-                    className="h-7 px-2 text-xs"
-                  >
-                    {hashtag}
-                  </Button>
-                ))}
-                {selectedHashtag && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedHashtag(null)}
-                    className="h-7 px-2 text-xs bg-secondary text-accent"
-                  >
-                    {t.clearFilter}
-                  </Button>
-                )}
-              </div>
-            </>
-          )}
-        </div>
         <DndContext
           collisionDetection={closestCorners}
           onDragStart={handleDragStart}
