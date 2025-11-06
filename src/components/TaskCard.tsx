@@ -111,12 +111,12 @@ export const TaskCard = ({ task, onDelete, onToggleComplete, onEdit, onMove, onH
   };
 
   return (
-    <Card
+    <div
       ref={setNodeRef}
       style={style}
       className={cn(
-        "group p-3 bg-card hover:shadow-md transition-all duration-200 touch-none",
-        isDragging && "opacity-50 shadow-lg scale-105"
+        "group px-2 py-1 bg-transparent transition-all duration-200 touch-none",
+        isDragging && "opacity-50 scale-105"
       )}
     >
       <div className="flex items-start gap-2">
@@ -247,6 +247,6 @@ export const TaskCard = ({ task, onDelete, onToggleComplete, onEdit, onMove, onH
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Card>
+    </div>
   );
 };
