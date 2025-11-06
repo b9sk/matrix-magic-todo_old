@@ -14,6 +14,7 @@ interface QuadrantCardProps {
   onToggleComplete: (id: string) => void;
   onEditTask: (id: string, text: string) => void;
   onMoveTask: (id: string, quadrant: QuadrantType) => void;
+  onHashtagClick?: (hashtag: string) => void;
 }
 
 export const QuadrantCard = ({
@@ -24,6 +25,7 @@ export const QuadrantCard = ({
   onToggleComplete,
   onEditTask,
   onMoveTask,
+  onHashtagClick,
 }: QuadrantCardProps) => {
   const { setNodeRef, isOver } = useDroppable({
     id: quadrant.id,
@@ -50,6 +52,7 @@ export const QuadrantCard = ({
                 onToggleComplete={onToggleComplete}
                 onEdit={onEditTask}
                 onMove={onMoveTask}
+                onHashtagClick={onHashtagClick}
               />
             ))}
           </SortableContext>
